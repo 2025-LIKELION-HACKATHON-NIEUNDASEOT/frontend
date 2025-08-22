@@ -28,7 +28,9 @@ export default function ChatbotBox({
         <S.ContentBox>
           <S.BadgeBox>
             {categories.map((c) => (
-              <Badge color='teal'>{c.category_name}</Badge>
+              <Badge key={c.id} color='teal'>
+                {c.category_name}
+              </Badge>
             ))}
           </S.BadgeBox>
           <S.Title>{title}</S.Title>
