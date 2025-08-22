@@ -10,6 +10,7 @@ import useProfile from "../../hooks/useProfile";
 import ChatbotBox from "../../components/ChatbotBox/ChatbotBox";
 import Badge from "../../components/Badge/Badge";
 import { makeScrapBadges } from "../../utils/makeBadges";
+import character from "../../assets/Character.png";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -117,7 +118,9 @@ export default function MyPage() {
         <S.TitleContainer>
           <S.TitleWrapper>
             <S.TitleBox>
-              <S.Character></S.Character>
+              <S.Character>
+                <img src={character} />
+              </S.Character>
               <S.TextBox>
                 {!isProfileLoading && profile && (
                   <S.Username>{profile.data.name}님,</S.Username>

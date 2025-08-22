@@ -13,6 +13,7 @@ import {
   listChatbotScrap,
 } from "../../services/scrapService";
 import { useSearchParams } from "react-router-dom";
+import noChatbot from "../../assets/nochatbot.png";
 
 export default function Chatbot({ isOpen, handleClose, postId }) {
   // URL 쿼리 파라미터 접근
@@ -357,7 +358,9 @@ export default function Chatbot({ isOpen, handleClose, postId }) {
           ) : (
             <S.NoChatBox>
               {/* 채팅 기록 없을 때 */}
-              <S.AICharacter />
+              <S.AICharacter>
+                <img src={noChatbot} />
+              </S.AICharacter>
               <S.NoChatText>
                 <S.NoChatTitle>안녕하세요!</S.NoChatTitle>
                 <S.NoChatContent>
