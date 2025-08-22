@@ -19,6 +19,7 @@ import {
   NAME_CATEGORY_MAP,
   NAME_REGION_MAP,
 } from "../../constants/maps";
+import NotificationEmpty from "../Notification/NotificationEmpty";
 
 const API_URL = process.env.REACT_APP_API_URL;
 const PAGE_SIZE = 10;
@@ -211,17 +212,21 @@ export default function ScrapedPosts() {
         </S.OrderContainer>
 
         <S.PostsWrapper>
-          {items.map((p) => (
-            <CardList
-              badges={makeScrapBadges(p)}
-              title={p.doc_title}
-              date={p.pub_date.slice(0, 10)}
-              key={p.id}
-              onClick={() => navigate(`/post/${p.document}`)}
-              image={p.image_url}
-              type={p.doc_type}
-            />
-          ))}
+          {items.length > 0 ? (
+            items.map((p) => (
+              <CardList
+                badges={makeScrapBadges(p)}
+                title={p.doc_title}
+                date={p.pub_date.slice(0, 10)}
+                key={p.id}
+                onClick={() => navigate(`/post/${p.document}`)}
+                image={p.image_url}
+                type={p.doc_type}
+              />
+            ))
+          ) : (
+            <NotificationEmpty />
+          )}
           <div ref={loadMoreRef} style={{ height: 1 }} />
         </S.PostsWrapper>
       </S.ScrapedContainer>

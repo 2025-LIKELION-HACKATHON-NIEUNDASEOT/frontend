@@ -16,6 +16,7 @@ import ChatbotBox from "../../components/ChatbotBox/ChatbotBox";
 
 import DropIcon from "../../assets/Back Icon.svg";
 import { deleteChatbotScrap } from "../../services/scrapService";
+import NotificationEmpty from "../Notification/NotificationEmpty";
 
 const API_URL = process.env.REACT_APP_API_URL;
 const PAGE_SIZE = 10;
@@ -260,20 +261,24 @@ export default function ScrapedChatbots() {
           </D.ResultHeader>
         </P.OrderContainer>
         <S.ContentContainer>
-          {items.map((c) => (
-            <ChatbotBox
-              key={c.id}
-              id={c.id}
-              categories={c.categories ?? []}
-              title={c.summary}
-              expanded={openId === c.id}
-              onToggle={() => handleToggle(c.id)}
-              onDelete={() => handleDelete(c.id)}
-              detail={openId === c.id ? detail : null}
-              loading={openId === c.id ? isDetailLoading : false}
-              isDeleting={isDeleting}
-            />
-          ))}
+          {items.length > 0 ? (
+            items.map((c) => (
+              <ChatbotBox
+                key={c.id}
+                id={c.id}
+                categories={c.categories ?? []}
+                title={c.summary}
+                expanded={openId === c.id}
+                onToggle={() => handleToggle(c.id)}
+                onDelete={() => handleDelete(c.id)}
+                detail={openId === c.id ? detail : null}
+                loading={openId === c.id ? isDetailLoading : false}
+                isDeleting={isDeleting}
+              />
+            ))
+          ) : (
+            <NotificationEmpty />
+          )}
           <div ref={loadMoreRef} style={{ height: 1 }} />
         </S.ContentContainer>
       </P.ScrapedContainer>
