@@ -16,8 +16,6 @@ import ChatbotBox from "../../components/ChatbotBox/ChatbotBox";
 
 import DropIcon from "../../assets/Back Icon.svg";
 import { deleteChatbotScrap } from "../../services/scrapService";
-import { emitScrapChange } from "../../utils/scrapChatbotEvent";
-import { chatbotScrapKey } from "../../utils/scrapChatbotKey";
 
 const API_URL = process.env.REACT_APP_API_URL;
 const PAGE_SIZE = 10;
@@ -203,8 +201,6 @@ export default function ScrapedChatbots() {
         const aiId = d?.ai_message; // 숫자
         const sessionId = String(d?.chatbot_session ?? ""); // 문자열로 강제
         if (Number.isFinite(aiId) && sessionId) {
-          localStorage.removeItem(chatbotScrapKey(sessionId, aiId));
-          emitScrapChange({ type: "delete", scrapId: id, sessionId, aiId });
         }
       } catch (e) {
         console.error(e);
