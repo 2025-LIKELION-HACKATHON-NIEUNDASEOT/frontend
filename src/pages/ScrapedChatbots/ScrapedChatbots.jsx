@@ -16,7 +16,7 @@ import ChatbotBox from "../../components/ChatbotBox/ChatbotBox";
 
 import DropIcon from "../../assets/Back Icon.svg";
 import { deleteChatbotScrap } from "../../services/scrapService";
-import NotificationEmpty from "../Notification/NotificationEmpty";
+import Empty from "../../components/Empty/Empty";
 
 const API_URL = process.env.REACT_APP_API_URL;
 const PAGE_SIZE = 10;
@@ -277,7 +277,10 @@ export default function ScrapedChatbots() {
               />
             ))
           ) : (
-            <NotificationEmpty />
+            <Empty
+              text='스크랩한 대화가 없어요'
+              subText='유용한 대화는 스크랩해 두고 다시 볼 수 있어요'
+            />
           )}
           <div ref={loadMoreRef} style={{ height: 1 }} />
         </S.ContentContainer>

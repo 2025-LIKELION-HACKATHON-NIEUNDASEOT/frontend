@@ -19,7 +19,7 @@ import {
   NAME_CATEGORY_MAP,
   NAME_REGION_MAP,
 } from "../../constants/maps";
-import NotificationEmpty from "../Notification/NotificationEmpty";
+import Empty from "../../components/Empty/Empty";
 
 const API_URL = process.env.REACT_APP_API_URL;
 const PAGE_SIZE = 10;
@@ -225,7 +225,10 @@ export default function ScrapedPosts() {
               />
             ))
           ) : (
-            <NotificationEmpty />
+            <Empty
+              text='스크랩한 공문이 없어요'
+              subText='관심 공문은 스크랩해서 모아보세요'
+            />
           )}
           <div ref={loadMoreRef} style={{ height: 1 }} />
         </S.PostsWrapper>
