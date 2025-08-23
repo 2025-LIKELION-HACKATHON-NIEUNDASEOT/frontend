@@ -27,6 +27,8 @@ export const Character = styled.div`
   height: 82.688px;
   aspect-ratio: 90/82.69;
   background-image: url(${character});
+  background-size: contain;
+  background-repeat: no-repeat; 
 `;
 
 export const TitleBox = styled.div`
