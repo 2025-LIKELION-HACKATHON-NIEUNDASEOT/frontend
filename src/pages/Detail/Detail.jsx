@@ -14,15 +14,22 @@ import buttonCircle from "../../assets/ButtonCircle.png";
 
 import * as B from "../../styles/ButtonCircle";
 import * as S from "./DetailStyle";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { REGION_MAP } from "../../constants/maps";
-import { createPostScrap, deletePostScrap } from "../../services/scrapService";
+import {
+  createPostScrap,
+  deletePostScrap,
+  findScrapId,
+} from "../../services/scrapService";
 import ShareToast from "../../components/ShareToast/ShareToast";
+import { formatText } from "../../utils/format";
+import RecommendBadges from "./RecommendBadges";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default function Detail() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { id } = useParams();
   const postId = Number(id);
 
@@ -39,20 +46,51 @@ export default function Detail() {
     {}
   );
 
+  // 초기에 챗봇 세션 포함 쿼리파라미터 조립
+  useEffect(() => {
+    if (isPostLoading || !post) return;
+
+    const sid = Number(post.chatbot_session_id);
+    const cur = searchParams.get("session");
+    const next = new URLSearchParams(searchParams);
+
+    if (Number.isFinite(sid)) {
+      // 다른 값이 들어있으면 그걸로 집어넣고, 없으면 새로 만듦
+      if (cur !== String(sid)) {
+        next.set("session", String(sid));
+        setSearchParams(next, { replace: true });
+      }
+    } else if (cur) {
+      // 세션이 없는데 쿼리가 남아있으면 없앰
+      next.delete("session");
+      setSearchParams(next, { replace: true });
+    }
+  }, [isPostLoading, post, searchParams, setSearchParams]);
+
   // 스크랩 관련 로직
-  const storageKey = useMemo(() => `scrap:${postId}`, [postId]);
   const [scrapId, setScrapId] = useState(null);
   const [isScraping, setIsScraping] = useState(false);
+  const [scrapReady, setScrapReady] = useState(false); // 초기에 스크랩 여부 조회했는지
   const isScraped = scrapId !== null;
 
-  // 초기화 : 같은 브라우저에서 이전에 생성한 scrapId가 있다면 가져옴
+  // 초기화 : 서버 목록에서 현재 문서 스크랩 여부 조회
   useEffect(() => {
-    const saved = localStorage.getItem(storageKey);
-    setScrapId(saved ? Number(saved) : null);
-  }, [storageKey]);
+    let cancelled = false;
+    (async () => {
+      setScrapReady(false);
+      try {
+        const id = await findScrapId(postId);
+        if (!cancelled) setScrapId(id);
+      } catch {
+      } finally {
+        if (!cancelled) setScrapReady(true);
+      }
+    })();
+  }, [postId]);
 
   const toggleScrap = async () => {
-    if (isScraping || isPostLoading) return;
+    if (isScraping || isPostLoading || isScraping) return;
+
     setIsScraping(true);
 
     try {
@@ -62,12 +100,10 @@ export default function Detail() {
         const newId = created?.data?.id;
         if (!newId) throw new Error("응답에 스크랩 ID가 없습니다.");
         setScrapId(newId);
-        localStorage.setItem(storageKey, String(newId));
       } else {
         // scrapId가 있었으므로 토글 === 취소
         await deletePostScrap(scrapId);
         setScrapId(null);
-        localStorage.removeItem(storageKey);
       }
     } catch (e) {
       console.error(e);
@@ -98,7 +134,7 @@ export default function Detail() {
         hasScrap={true}
         isScrap={isScraped}
         onToggleScrap={toggleScrap}
-        scrapDisabled={isScraping}
+        scrapDisabled={isScraping || !scrapReady}
       />
       <B.ButtonWrapper>
         <GoToTop $isOpen={isOpen} />
@@ -157,7 +193,7 @@ export default function Detail() {
 
             {/* 본문 */}
             <S.ContentBox>
-              <S.Content>{post.doc_content.replaceAll(".", ". ")}</S.Content>
+              <S.Content>{formatText(post.doc_content)}</S.Content>
               {/* 추가 예정 */}
               <img src={post.image_url ?? null} />
             </S.ContentBox>
@@ -167,7 +203,10 @@ export default function Detail() {
               {/* 추가 필요 */}
               <S.LinkBtn href={post.link_url}>원문 바로가기</S.LinkBtn>
               <S.SecondBtnBox>
-                <S.SecondBtn onClick={toggleScrap}>
+                <S.SecondBtn
+                  onClick={toggleScrap}
+                  disabled={!scrapReady || isScraping}
+                >
                   <img src={isScraped ? scrapTrue : scrapFalse} />
                   스크랩
                 </S.SecondBtn>
@@ -183,20 +222,20 @@ export default function Detail() {
         {/* 관련 공문 추천 */}
         <S.RecommendBox>
           <S.Title>관련 공문 추천</S.Title>
-          {post.similar_documents && (
-            <>
-              {/* 뱃지 추가 필요 */}
-              {post.similar_documents?.map((doc) => (
+          {post.similar_documents?.map((doc) => (
+            <RecommendBadges key={doc.id} doc={doc}>
+              {(badges, loading) => (
                 <CardList
+                  badges={badges}
                   title={doc.doc_title}
                   date={doc.pub_date.slice(0, 10)}
                   key={doc.id}
                   onClick={() => navigate(`/post/${doc.id}`)}
                   type={post.doc_type}
                 />
-              ))}
-            </>
-          )}
+              )}
+            </RecommendBadges>
+          ))}
         </S.RecommendBox>
       </S.DetailContainer>
     </>

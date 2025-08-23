@@ -7,9 +7,6 @@
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
 
-import { initializeApp } from "firebase/app";
-import { getMessaging } from "firebase/messaging";
-import { onBackgroundMessage } from "firebase/messaging/sw";
 import { clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
 import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
@@ -75,44 +72,25 @@ self.addEventListener("message", (event) => {
 
 // Any other custom service worker logic can go here.
 
-// FCM 백그라운드 메세지 로직
-
-import { initializeApp } from "firebase/app";
-import { getMessaging, onBackgroundMessage } from "firebase/messaging/sw";
-
-const app = initializeApp({
-  apiKey: process.env.REACT_APP_FB_API_KEY,
-  authDomain: process.env.REACT_APP_FB_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FB_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FB_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FB_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FB_APP_ID,
-  measurementId: process.env.REACT_APP_FB_MEASUREMENT_ID,
-});
-
-const messaging = getMessaging(app);
-
-onBackgroundMessage(messaging, (payload) => {
-  const n = payload?.notification || {};
-  const title = n.title || "알림";
-  const options = {
-    body: n.body || "",
-    icon: n.icon || "/logo192.png",
-    image: n.image || "",
-    data: { url: n.click_action || "/" },
-  };
-  self.ServiceWorkerRegistration.showNotification(title, options);
-});
-
+// 푸시 알림 클릭 로직
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-  const url = event.notification?.data?.url || "/";
+  const d = event.notification?.data || {};
+  const docId = d.document_id;
+  const path = docId ? `/post/${encodeURIComponent(docId)}` : "/notification";
+  const target = new URL(path, self.location.origin).href;
+
   event.waitUntil(
     clients
       .matchAll({ type: "window", includeUncontrolled: true })
       .then((wins) => {
-        for (const w of wins) if ("focus" in w) return w.focus();
-        return clients.openWindow(url);
+        for (const w of wins) {
+          const wUrl = new URL(w.url),
+            tUrl = new URL(target);
+          if (wUrl.pathname === tUrl.pathname && wUrl.search === tUrl.search)
+            return w.focus();
+        }
+        return clients.openWindow(target);
       })
   );
 });
