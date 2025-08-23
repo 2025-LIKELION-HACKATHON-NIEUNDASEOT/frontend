@@ -88,6 +88,8 @@ export async function bootstrapFcm({ userId = "GUEST1", onForeground } = {}) {
       await reg.showNotification(title, {
         body,
         data: { ...d, docId, path },
+        icon: "/logo512.png",
+        badge: "/logo192.png",
         tag,
         renotify: false,
       });
