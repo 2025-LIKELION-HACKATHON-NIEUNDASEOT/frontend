@@ -10,7 +10,7 @@ import * as S from "./SearchStyle";
 import useFetch from "../../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
 import { makeBadges } from "../../utils/makeBadges";
-import BackIcon from "../../assets/Back Icon.svg";
+import DropIcon from "../../assets/Back Icon.svg";
 
 // --- 최근 검색어 관리를 위한 함수 ---
 const getSearchHistory = () => {
@@ -102,7 +102,7 @@ export default function Search() {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   {sortOrder}
-                  <img src={BackIcon} />
+                  <img src={DropIcon} />
                 </S.SortButton>
                 {isDropdownOpen && (
                   <S.DropdownMenu>
