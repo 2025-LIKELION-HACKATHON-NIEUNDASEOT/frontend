@@ -51,7 +51,6 @@ export default function Search() {
     : null;
 
   const { data: searchData, isLoading } = useFetch(searchUrl, {});
-  // 👇 [수정] searchData.data.results 로 데이터 경로를 수정했습니다.
   const searchResults = searchData?.data?.results ?? [];
 
   const handleSearchSubmit = (query) => {
