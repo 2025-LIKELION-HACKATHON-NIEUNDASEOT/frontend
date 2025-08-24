@@ -35,8 +35,16 @@ export const Title = styled.div`
   font-weight: 700;
   line-height: var(--Heading-lg-line-height);
   letter-spacing: var(--letter-spacing);
+  padding: 0;
 `;
-
+export const RecommendTitle = styled.div`
+  color: var(--color-base-black);
+  font-size: var(--Heading-lg-font-size);
+  font-weight: 700;
+  line-height: var(--Heading-lg-line-height);
+  letter-spacing: var(--letter-spacing);
+  padding: 12px 0;
+`;
 export const MetaInfo = styled.div`
   display: flex;
   align-items: center;
@@ -93,7 +101,7 @@ export const AIBox = styled.div`
 export const AICharacter = styled.div`
   width: 171.592px;
   aspect-ratio: 131/112;
-  opacity: 0.7; /* 시안과 비슷하게 가려고 일부러 오퍼시티 더 낮춤 */
+  opacity: 0.7; 
   background-image: url(${summaryCharacter});
   background-repeat: no-repeat;
   position: absolute;
