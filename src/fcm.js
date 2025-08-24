@@ -97,13 +97,16 @@ export async function bootstrapFcm() {
 
   // 포그라운드 수신
   const unsubscribe = onMessage(messaging, async (payload) => {
+    console.log(payload);
+    if (payload && payload.notification) return;
+
     const n = payload.notification || {};
     const d = payload.data || {};
 
-    const title = n.title;
-    const body = n.body;
+    const title = n.title ?? d.title ?? "알림";
+    const body = n.body ?? d.body ?? "";
 
-    const docId = d.document_id || null;
+    const docId = d?.document_id ?? d?.docId ?? null;
     const path = docId ? `/post/${encodeURIComponent(docId)}` : "/notification";
     const tag = docId ? `doc-${docId}` : "push";
 

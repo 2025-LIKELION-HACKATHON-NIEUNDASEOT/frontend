@@ -42,9 +42,9 @@ function buildNotification(payload) {
   const n = payload.notification;
   const d = payload.data;
 
-  const title = n.title;
-  const body = n.body;
-  const docId = d.document_id || d.data.document_id || null;
+  const title = n.title ?? d.title ?? "알림";
+  const body = n.body ?? d.body ?? "";
+  const docId = d?.document_id ?? d?.docId ?? null;
   const path = docId ? `/post/${encodeURIComponent(docId)}` : "/notification";
   const tag = docId ? `doc-${docId}` : "push";
 
@@ -75,13 +75,9 @@ self.addEventListener("push", (e) => {
   const { title, options } = buildNotification(payload);
   e.waitUntil(
     (async () => {
-      const clientsList = await clients.matchAll({
-        type: "window",
-        includeUncontrolled: true,
-      });
-      // 열려 있는 창이 있으면 onMessage, 없으면 SW
-      if (clientsList.length === 0) {
+      if (payload && payload.notification) {
         await showOnlyOneNoti(title, options);
+        return;
       }
     })()
   );
