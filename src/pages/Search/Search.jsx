@@ -102,6 +102,7 @@ export default function Search() {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   {sortOrder}
+                  <img src={DropIcon} />
                 </S.SortButton>
                 {isDropdownOpen && (
                   <S.DropdownMenu>

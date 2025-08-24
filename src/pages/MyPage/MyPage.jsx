@@ -134,14 +134,14 @@ export default function MyPage() {
                 </S.Text>
               </S.TextBox>
             </S.TitleBox>
-            <MoreBtn value='수정하기' onClick={() => navigate("/profile")} />
+            <MoreBtn value='수정하기' onClick={() => navigate("/profile")} atMyPage={true} />
           </S.TitleWrapper>
         </S.TitleContainer>
         <S.BadgeWrapper>
           {!isProfileLoading && profile && (
             <>
               {(profile.data.user_regions ?? []).map((r) => (
-                <Badge color='blue' key={r.id}>
+                <Badge color='blue' key={r.region?.id}>
                   {r.region?.district}
                 </Badge>
               ))}

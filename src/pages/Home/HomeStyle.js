@@ -83,7 +83,7 @@ export const Character = styled.div`
 
 export const Title = styled.div`
   font-size: var(--Heading-md-font-size);
-  color: #ffffff;
+  color: var(--color-base-white);
   margin: 0;
   font-weight: 600;
   line-height: var(--Heading-md-line-height);
@@ -93,7 +93,7 @@ export const Title = styled.div`
   div {
     font-weight: 500;
     font-size: var(--Body-md-font-size);
-    color: #ffffff;
+    color: var(--color-base-white);
   }
   strong {
     font-weight: 500;
@@ -112,9 +112,8 @@ export const BadgeWrapper = styled.div`
   display: flex;
   gap: 4px;
 
-
   & > div {
-    color: #ffffff ;
+    color: #ffffff;
   }
 `;
 
