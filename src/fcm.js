@@ -137,5 +137,5 @@ export async function bootstrapFcm() {
   //   console.error("showNotification 오류:", e);
   // }
   // });
-  return { token: currentToken, unsubscribe };
+  return { token: currentToken };
 }
