@@ -3,7 +3,6 @@ import {
   getToken,
   isSupported,
   onMessage,
-  // deleteToken,
 } from "firebase/messaging";
 import { fbApp } from "./firebase";
 
@@ -30,6 +29,7 @@ function setLS(key, value) {
   } catch {}
 }
 
+// 토큰을 서버에 등록
 async function sendToken(token) {
   const res = await fetch(`${API_URL}/notification/fcm/register/`, {
     method: "POST",
@@ -41,7 +41,7 @@ async function sendToken(token) {
     }),
   });
   const text = await res.text();
-  console.log("FCM 토큰 서버 등록 : ", res.status, text);
+  // console.log("FCM 토큰 서버 등록 : ", res.status, text);
   if (!res.ok) throw new Error(`register failed: ${res.status}`);
   setLS(LS_TOKEN, token); // fetch 성공하면 마지막 토큰 갱신
 }
@@ -51,28 +51,33 @@ export function getLastToken() {
   return getLS(LS_TOKEN);
 }
 
-function buildNotification(payload) {
-  const n = (payload && payload.notification) || {};
-  const d = (payload && payload.data) || {};
+// 알림 포맷 정리
+// function buildNotification(payload) {
+//   const n = (payload && payload.notification) || {};
+//   const d =
+//     (payload && payload.data) || (payload && payload.notification.data) || {};
 
-  const title = n.title ?? d.title ?? "알림";
-  const body = n.body ?? d.body ?? "";
-  const docId = d?.document_id ?? d?.docId ?? null;
-  const path = docId ? `/post/${encodeURIComponent(docId)}` : "/notification";
-  const tag = docId ? `doc-${docId}` : "push";
+//   const title =
+//     n.title ?? d.title ?? "";
+//   const body =
+//     n.body ?? d.body ?? "";
+//   const docId = d?.document_id ?? d?.docId ?? null;
+//   const path = docId ? `/post/${encodeURIComponent(docId)}` : "/notification";
+//   const tag = docId ? `doc-${docId}` : "push";
 
-  const options = {
-    body,
-    icon: "/logo512.png",
-    badge: "/logo192.png",
-    tag,
-    renotify: false,
-    data: { ...d, document_id: docId, path },
-  };
+//   const options = {
+//     body,
+//     // icon: "/logo512.png",
+//     badge: "/logo192.png",
+//     tag,
+//     renotify: true,
+//     data: { ...d, document_id: docId, path },
+//   };
 
-  return { title, options };
-}
+//   return { title, options };
+// }
 
+// 토큰 및 알림 처리
 export async function bootstrapFcm() {
   const ok = await isSupported().catch(() => false);
   if (!ok) return { token: null, unsubscribe: () => {} };
@@ -98,7 +103,7 @@ export async function bootstrapFcm() {
       vapidKey: VAPID_KEY,
       serviceWorkerRegistration: registration,
     });
-    console.log("FCM token:", currentToken);
+    // console.log("FCM token:", currentToken);
   } catch (e) {
     console.error("getToken 실패", e);
   }
@@ -115,24 +120,22 @@ export async function bootstrapFcm() {
     }
   }
 
-  // 포그라운드 수신
-  const unsubscribe = onMessage(messaging, async (payload) => {
-    console.log(payload);
-    // 다중탭 중복 수신 방지
-    if (document.visibilityState !== "visible") return;
+  // 포그라운드 수신 => SW에 일임
+  // const unsubscribe = onMessage(messaging, async (payload) => {
+  //   console.log("[메세지 도착]", payload);
 
-    const { title, options } = buildNotification(payload);
+  // const { title, options } = buildNotification(payload);
 
-    try {
-      const existing = await registration.getNotifications({
-        includeTriggered: true,
-      });
-      const tag = options.tag;
-      existing.filter((n) => n.tag === tag).forEach((n) => n.close());
-      await registration.showNotification(title, options);
-    } catch (e) {
-      console.error("showNotification 오류:", e);
-    }
-  });
-  return { token: currentToken, unsubscribe };
+  // try {
+  // const existing = await registration.getNotifications({
+  //   includeTriggered: true,
+  // });
+  // const tag = options.tag;
+  // existing.filter((n) => n.tag === tag).forEach((n) => n.close());
+  //   await registration.showNotification(title, options);
+  // } catch (e) {
+  //   console.error("showNotification 오류:", e);
+  // }
+  // });
+  return { token: currentToken };
 }

@@ -1,48 +1,12 @@
-// importScripts(
-//   "https://www.gstatic.com/firebasejs/12.1.0/firebase-app-compat.js"
-// );
-// importScripts(
-//   "https://www.gstatic.com/firebasejs/12.1.0/firebase-messaging-compat.js"
-// );
-
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (evt) => evt.waitUntil(self.clients.claim()));
 
-// firebase.initializeApp({
-//   apiKey: "AIzaSyCzMqxMRpkho-eQnFbWabwrLzxR2AyzFTw",
-//   authDomain: "villit.firebaseapp.com",
-//   projectId: "villit",
-//   storageBucket: "villit.firebasestorage.app",
-//   messagingSenderId: "211295403138",
-//   appId: "1:211295403138:web:085695fc4f1c2b3f23c89b",
-//   measurementId: "G-TGDQTG0CQD",
-// });
-
-// const messaging = firebase.messaging();
-
-// messaging.onBackgroundMessage((payload) => {
-//   console.log(payload);
-//   const n = payload.notification || {};
-//   const d = payload.data || {};
-//   const title = n.title;
-//   const body = n.body;
-//   const docId = d.document_id;
-//   const path = docId ? `/post/${encodeURIComponent(docId)}` : "/notification";
-//   self.registration.showNotification(title, {
-//     body,
-//     icon: "/logo512.png",
-//     badge: "/logo192.png",
-//     tag: docId ? `doc-${docId}` : "push",
-//     renotify: false,
-//     data: { ...d, document_id: docId, path },
-//   });
-// });
-
+// 알림 포맷 정리
 function buildNotification(payload) {
   const n = (payload && payload.notification) || {};
   const d = (payload && payload.data) || {};
 
-  const title = n.title ?? d.title ?? "알림";
+  const title = n.title ?? d.title ?? "";
   const body = n.body ?? d.body ?? "";
   const docId = d?.document_id ?? d?.docId ?? null;
   const path = docId ? `/post/${encodeURIComponent(docId)}` : "/notification";
@@ -53,13 +17,14 @@ function buildNotification(payload) {
     icon: "/logo512.png",
     badge: "/logo192.png",
     tag,
-    renotify: false,
+    renotify: true,
     data: { ...d, document_id: docId, path },
   };
 
   return { title, options };
 }
 
+// 중복 알림 방지
 async function showOnlyOneNoti(title, options) {
   const existing = await self.registration.getNotifications({
     includeTriggered: true,
@@ -70,6 +35,7 @@ async function showOnlyOneNoti(title, options) {
   return self.registration.showNotification(title, options);
 }
 
+// 포그라운드/백그라운드 구분
 async function anyClientVisible() {
   const list = await self.clients.matchAll({
     type: "window",
@@ -84,22 +50,24 @@ async function anyClientVisible() {
   });
 }
 
+// 푸시 알림 관리
 self.addEventListener("push", (e) => {
   const payload = e.data ? e.data.json() : {};
-  console.log(payload);
+  // console.log(payload);
   const { title, options } = buildNotification(payload);
 
   e.waitUntil(
     (async () => {
       const hasVisible = await anyClientVisible();
-      // 보이는 탭이 없을 때만 SW가 표시
-      if (!hasVisible) {
+      // 보이는 탭이 있을 때만 SW가 표시
+      if (hasVisible) {
         await showOnlyOneNoti(title, options);
       }
     })()
   );
 });
 
+// 알림 클릭 로직
 self.addEventListener("notificationclick", (e) => {
   e.notification.close();
   const path = e.notification?.data?.path || "/notification";
