@@ -23,7 +23,7 @@ const addSearchHistory = (term) => {
   history = history.filter((item) => item.term !== term);
   const newEntry = {
     term,
-    date: new Date().toLocaleString("ko-KR").slice(2, -1),
+    date: new Date().toLocaleString("ko-KR").slice(0, 12),
   };
   const newHistory = [newEntry, ...history].slice(0, 10);
   localStorage.setItem("searchHistory", JSON.stringify(newHistory));
