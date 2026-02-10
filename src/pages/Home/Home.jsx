@@ -170,7 +170,7 @@ export default function Home() {
                   <CardList
                     key={item.document.id}
                     variant='card'
-                    badges={makeScrapBadges(item.document)}
+                    badges={makeScrapBadges(item.document, true)}
                     title={item.document.doc_title}
                     onClick={() => navigate(`/post/${item.document.id}`)}
                     image={item.document.image_url}
