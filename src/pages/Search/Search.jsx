@@ -9,6 +9,7 @@ import useFetch from "../../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
 import { makeBadges } from "../../utils/makeBadges";
 import DropIcon from "../../assets/Back Icon.svg";
+import PageTitle from "../../components/PageTitle/PageTitle";
 
 // --- 최근 검색어 관리를 위한 함수 ---
 const getSearchHistory = () => {
@@ -82,6 +83,7 @@ export default function Search() {
 
   return (
     <>
+      <PageTitle title='검색' />
       <Header hasBack={true} title='검색' hasScrap={false} />
       <S.SearchContainer>
         <SearchInputField
