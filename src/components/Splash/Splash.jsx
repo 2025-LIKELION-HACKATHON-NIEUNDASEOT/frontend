@@ -7,7 +7,12 @@ export default function Splash({ children }) {
   const [isMounted, setIsMounted] = useState(true);
 
   useEffect(() => {
-    if (!isMounted) return;
+    const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
+
+    if (hasSeenSplash) {
+      setIsMounted(false);
+      return;
+    }
 
     const timerToFade = setTimeout(() => {
       setIsFading(true);
@@ -15,17 +20,19 @@ export default function Splash({ children }) {
 
     const timerToRemove = setTimeout(() => {
       setIsMounted(false);
+      sessionStorage.setItem("hasSeenSplash", "true");
     }, 1000 + 400);
 
     return () => {
       clearTimeout(timerToFade);
       clearTimeout(timerToRemove);
     };
-  }, [isMounted]);
+  }, []);
 
   if (!isMounted) {
     return children;
   }
+
   return (
     <S.Container $isfading={isFading}>
       <img src={homeIcon} alt='Villit Icon' />
