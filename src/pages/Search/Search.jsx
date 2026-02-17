@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { makeBadges } from "../../utils/makeBadges";
 import DropIcon from "../../assets/Back Icon.svg";
 import PageTitle from "../../components/PageTitle/PageTitle";
-import close from "../../assets/Profile/close_small.svg";
 
 // --- 최근 검색어 관리를 위한 함수 ---
 const getSearchHistory = () => {
