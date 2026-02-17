@@ -10,6 +10,7 @@ import { makeBadges, makeScrapBadges } from "../../utils/makeBadges.js";
 import MoreBtn from "../../components/MoreBtn/MoreBtn.jsx";
 import { NAME_REGION_MAP } from "../../constants/maps.js";
 import PageTitle from "../../components/PageTitle/PageTitle.jsx";
+import Splash from "../../components/Splash/Splash.jsx";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -59,7 +60,7 @@ export default function Home() {
   const recentNews = recentNewsData?.recent_news ?? [];
 
   return (
-    <>
+    <Splash>
       <PageTitle title='홈' />
       <S.HomeWrapper>
         <Header
@@ -207,6 +208,6 @@ export default function Home() {
           </S.SectionWrapper>
         </S.ContentContainer>
       </S.HomeWrapper>
-    </>
+    </Splash>
   );
 }
