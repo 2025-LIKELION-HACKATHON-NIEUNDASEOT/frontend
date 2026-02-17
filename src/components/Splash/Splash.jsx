@@ -34,8 +34,13 @@ export default function Splash({ children }) {
   }
 
   return (
-    <S.Container $isfading={isFading}>
-      <img src={homeIcon} alt='Villit Icon' />
-    </S.Container>
+    <>
+      {children}
+      {isMounted && (
+        <S.Container $isfading={isFading}>
+          <img src={homeIcon} alt='Villit Icon' />
+        </S.Container>
+      )}
+    </>
   );
 }
