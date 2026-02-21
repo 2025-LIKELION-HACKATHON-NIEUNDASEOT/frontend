@@ -1,21 +1,24 @@
-import React, { useState, useMemo, useCallback, useEffect } from "react";
-import Header from "../../components/Header/Header";
-import GoToTop from "../../components/GoToTop/GoToTop";
-import CategoryBar from "../../components/CategoryBar/CategoryBar.jsx";
-import CardList from "../../components/CardList/CardList";
-import SmallFilter from "../../components/SmallFilter/SmallFilter";
-import * as B from "../../styles/ButtonCircle";
-import * as S from "./NotificationStyle";
-import * as F from "../../components/SmallFilter/SmallFilterStyle";
-import useFetch from "../../hooks/useFetch";
-import NotificationEmpty from "./NotificationEmpty";
-import { makeNotiBadges } from "../../utils/makeBadges";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
+import useFetch from "../../hooks/useFetch";
+import { makeNotiBadges } from "../../utils/makeBadges";
 import {
   CATEGORY_TYPE_MAP,
   NAME_CATEGORY_MAP,
   NAME_REGION_MAP,
 } from "../../constants/maps";
+
+import * as B from "../../styles/ButtonCircle";
+import * as S from "./NotificationStyle";
+import * as F from "../../components/SmallFilter/SmallFilterStyle";
+
+import NotificationEmpty from "./NotificationEmpty";
+import Header from "../../components/Header/Header";
+import GoToTop from "../../components/GoToTop/GoToTop";
+import CategoryBar from "../../components/CategoryBar/CategoryBar.jsx";
+import CardList from "../../components/CardList/CardList";
+import SmallFilter from "../../components/SmallFilter/SmallFilter";
 import PushBtn from "../../components/PushBtn/PushBtn";
 import ShareToast from "../../components/ShareToast/ShareToast.jsx";
 import PageTitle from "../../components/PageTitle/PageTitle.jsx";
@@ -26,7 +29,7 @@ const READ_NOTIFICATIONS_KEY = "readNotifications";
 export default function Notification() {
   const navigate = useNavigate();
 
-  // --- '읽은 알림' 상태 관리 (localStorage 연동) ---
+  // '읽은 알림' 상태 관리 (localStorage 연동)
   const [readIds, setReadIds] = useState(() => {
     try {
       const stored = localStorage.getItem(READ_NOTIFICATIONS_KEY);
@@ -40,7 +43,6 @@ export default function Notification() {
   useEffect(() => {
     localStorage.setItem(READ_NOTIFICATIONS_KEY, JSON.stringify([...readIds]));
   }, [readIds]);
-  // ----------------------------------------------------
 
   // 필터 상태
   const [docType, setDocType] = useState(undefined);
@@ -85,7 +87,7 @@ export default function Notification() {
   const { data: notificationData, isLoading } = useFetch(listUrl, {});
   const notifications = notificationData?.data?.results ?? [];
 
-  // --- 알림 클릭 핸들러 ---
+  //알림 클릭 핸들러
   const handleNotificationClick = (item) => {
     // '읽음' 상태가 아니면 readIds에 추가
     if (!item.is_read) {
@@ -94,7 +96,7 @@ export default function Notification() {
     // 상세 페이지로 이동
     navigate(`/post/${item.document_info.id}`);
   };
-  // -------------------------
+
   // 푸시 버튼 토스트
   const [toastShow, setToastShow] = useState(false);
 

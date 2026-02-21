@@ -1,14 +1,16 @@
-import React from "react";
-import * as S from "./HomeStyle.js";
 import { useNavigate } from "react-router-dom";
+
+import useProfile from "../../hooks/useProfile.js";
+import useFetch from "../../hooks/useFetch.js";
+import { NAME_REGION_MAP } from "../../constants/maps.js";
+import { makeBadges, makeScrapBadges } from "../../utils/makeBadges.js";
+
+import * as S from "./HomeStyle.js";
+
 import CardList from "../../components/CardList/CardList";
 import Badge from "../../components/Badge/Badge";
 import Header from "../../components/Header/Header.jsx";
-import useProfile from "../../hooks/useProfile.js";
-import useFetch from "../../hooks/useFetch.js";
-import { makeBadges, makeScrapBadges } from "../../utils/makeBadges.js";
 import MoreBtn from "../../components/MoreBtn/MoreBtn.jsx";
-import { NAME_REGION_MAP } from "../../constants/maps.js";
 import PageTitle from "../../components/PageTitle/PageTitle.jsx";
 import Splash from "../../components/Splash/Splash.jsx";
 

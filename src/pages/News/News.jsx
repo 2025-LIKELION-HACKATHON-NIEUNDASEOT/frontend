@@ -1,28 +1,23 @@
-// src/pages/News/News.jsx
+import { useRef, useState, useEffect, useCallback, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-} from "react";
-import Header from "../../components/Header/Header";
-import GoToTop from "../../components/GoToTop/GoToTop";
-import CategoryBar from "../../components/CategoryBar/CategoryBar.jsx";
-import Filter from "../../components/Filter/Filter";
-import PostCard from "../../components/PostCard/PostCard";
-import Badge from "../../components/Badge/Badge";
-import * as B from "../../styles/ButtonCircle";
-import * as S from "./NewsStyle";
 import useFetch from "../../hooks/useFetch";
 import { makeBadges } from "../../utils/makeBadges";
-import { useNavigate } from "react-router-dom";
 import {
   CATEGORY_TYPE_MAP,
   NAME_CATEGORY_MAP,
   NAME_REGION_MAP,
 } from "../../constants/maps";
+
+import * as B from "../../styles/ButtonCircle";
+import * as S from "./NewsStyle";
+
+import Header from "../../components/Header/Header";
+import GoToTop from "../../components/GoToTop/GoToTop";
+import CategoryBar from "../../components/CategoryBar/CategoryBar.jsx";
+import Filter from "../../components/Filter/Filter";
+import CardList from "../../components/CardList/CardList.jsx";
+import Badge from "../../components/Badge/Badge";
 import PageTitle from "../../components/PageTitle/PageTitle.jsx";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -165,7 +160,7 @@ export default function News() {
           </S.FilterWrapper>
 
           {posts.map((item) => (
-            <PostCard
+            <CardList
               key={item.id}
               badges={makeBadges(item)}
               title={item.doc_title}

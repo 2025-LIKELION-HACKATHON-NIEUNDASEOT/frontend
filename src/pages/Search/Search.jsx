@@ -9,16 +9,16 @@ import {
   deleteSearchHistory,
 } from "../../services/searchService";
 
+import * as B from "../../styles/ButtonCircle";
+import * as S from "./SearchStyle";
+
 import Header from "../../components/Header/Header";
 import SearchInputField from "../../components/SearchInputField/SearchInputField";
 import CardList from "../../components/CardList/CardList";
 import GoToTop from "../../components/GoToTop/GoToTop";
-
-import * as B from "../../styles/ButtonCircle";
-import * as S from "./SearchStyle";
+import PageTitle from "../../components/PageTitle/PageTitle";
 
 import DropIcon from "../../assets/Back Icon.svg";
-import PageTitle from "../../components/PageTitle/PageTitle";
 
 const API_URL = process.env.REACT_APP_API_URL;
 

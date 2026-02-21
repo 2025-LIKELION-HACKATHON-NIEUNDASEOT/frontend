@@ -1,8 +1,10 @@
-import Badge from "../Badge/Badge";
+import { useLayoutEffect, useRef } from "react";
+
 import * as S from "./ChatbotBoxStyle";
 import * as F from "../Filter/FilterStyle";
 import * as C from "../Chatbot/ChatbotStyle";
-import { useLayoutEffect, useRef, useState } from "react";
+
+import Badge from "../Badge/Badge";
 
 // category : 해당 채팅이 있었던 공문의 카테고리
 // title : AI 응답 요약
@@ -12,6 +14,19 @@ import { useLayoutEffect, useRef, useState } from "react";
 // detail : 펼쳤을 때 보여질 상세 내용
 // loading : 펼쳤을 때 상세 내용 로딩
 // isDeleting : 삭제 버튼 누르고 로딩
+
+/**
+ * 스크랩한 챗봇 페이지에서 쓰이는 챗봇 박스 컴포넌트
+ * @param {object} props
+ * @param {Array<{id: number, category_name: string}>} props.categories - 챗봇이 속한 공문의 카테고리 리스트
+ * @param {string} props.title - 챗봇 요약 제목
+ * @param {boolean} props.expanded - 챗봇 박스 펼침 여부
+ * @param {Function} props.onToggle - 챗봇 박스 펼침 토글 함수
+ * @param {Function} props.onDelete - 챗봇 스크랩 삭제 함수
+ * @param {object|null} props.detail - 챗봇 상세 내용 (펼쳤을 때 보여질 내용) (기본값 null)
+ * @param {boolean} props.loading - 챗봇 상세 내용 로딩 여부 (기본값 false)
+ * @param {boolean} props.isDeleting - 챗봇 삭제 중 여부 (삭제 버튼 비활성화에 사용) (기본값 false)
+ */
 export default function ChatbotBox({
   categories,
   title,

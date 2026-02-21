@@ -1,30 +1,31 @@
-import { useEffect, useMemo, useState } from "react";
-import useFetch from "../../hooks/useFetch";
-
-import GoToTop from "../../components/GoToTop/GoToTop";
-import Header from "../../components/Header/Header";
-import CardList from "../../components/CardList/CardList";
-import Badge from "../../components/Badge/Badge";
-import Chatbot from "../../components/Chatbot/Chatbot";
-
-import scrapTrue from "../../assets/Detail/bookmark_true.svg";
-import scrapFalse from "../../assets/Detail/bookmark_false.svg";
-import share from "../../assets/Detail/share.svg";
-import buttonCircle from "../../assets/ButtonCircle.png";
-
-import * as B from "../../styles/ButtonCircle";
-import * as S from "./DetailStyle";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+
+import useFetch from "../../hooks/useFetch";
 import { REGION_MAP } from "../../constants/maps";
 import {
   createPostScrap,
   deletePostScrap,
   findScrapId,
 } from "../../services/scrapService";
-import ShareToast from "../../components/ShareToast/ShareToast";
 import { formatText } from "../../utils/format";
+
+import * as B from "../../styles/ButtonCircle";
+import * as S from "./DetailStyle";
+
+import GoToTop from "../../components/GoToTop/GoToTop";
+import Header from "../../components/Header/Header";
+import CardList from "../../components/CardList/CardList";
+import Badge from "../../components/Badge/Badge";
+import Chatbot from "../../components/Chatbot/Chatbot";
+import ShareToast from "../../components/ShareToast/ShareToast";
 import RecommendBadges from "./RecommendBadges";
 import PageTitle from "../../components/PageTitle/PageTitle";
+
+import scrapTrue from "../../assets/Detail/bookmark_true.svg";
+import scrapFalse from "../../assets/Detail/bookmark_false.svg";
+import share from "../../assets/Detail/share.svg";
+import buttonCircle from "../../assets/ButtonCircle.png";
 
 const API_URL = process.env.REACT_APP_API_URL;
 

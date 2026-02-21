@@ -132,6 +132,8 @@ export const CardContainer = styled.div`
   &:active {
     background-color: var(--color-neutral-100);
   }
+
+  transition: background-color 0.2s ease;
 `;
 
 export { ContentWrapper, CardImage };

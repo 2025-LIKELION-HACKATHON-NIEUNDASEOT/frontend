@@ -1,18 +1,22 @@
+import { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+
+import useFetch from "../../hooks/useFetch";
+import useProfile from "../../hooks/useProfile";
+import { makeScrapBadges } from "../../utils/makeBadges";
+import { deleteChatbotScrap } from "../../services/scrapService";
+
 import * as S from "./MyPageStyle";
 import * as H from "../Home/HomeStyle";
+
 import Header from "../../components/Header/Header";
-import { useNavigate } from "react-router-dom";
 import MoreBtn from "../../components/MoreBtn/MoreBtn";
-import useFetch from "../../hooks/useFetch";
-import { useEffect, useState, useCallback } from "react";
 import CardList from "../../components/CardList/CardList";
-import useProfile from "../../hooks/useProfile";
 import ChatbotBox from "../../components/ChatbotBox/ChatbotBox";
 import Badge from "../../components/Badge/Badge";
-import { makeScrapBadges } from "../../utils/makeBadges";
-import character from "../../assets/Character.png";
-import { deleteChatbotScrap } from "../../services/scrapService";
 import PageTitle from "../../components/PageTitle/PageTitle";
+
+import character from "../../assets/Character.png";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
