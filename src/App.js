@@ -1,7 +1,10 @@
 import { Outlet, Route, Routes } from "react-router-dom";
+
 import Main from "./components/layout/Main";
-import Navigator from "./components/Navigator/Navigator";
 import GlobalStyle from "./styles/GlobalStyle";
+
+import Navigator from "./components/Navigator/Navigator";
+
 import Home from "./pages/Home/Home";
 import Detail from "./pages/Detail/Detail";
 import Search from "./pages/Search/Search.jsx";
@@ -34,14 +37,14 @@ function App() {
       <Main>
         <Routes>
           <Route element={<WithNav />}>
-            {/* Navigator가 있는 경우 이쪽에 route를 만들어주세요 */}
+            {/* Navigator가 있는 경우 */}
             <Route index element={<Home />} />
             <Route path='/notification' element={<Notification />} />
             <Route path='/news' element={<News />} />
             <Route path='/mypage' element={<MyPage />} />
           </Route>
           <Route element={<WithoutNav />}>
-            {/* Navigator가 없는 경우 이쪽에 route를 만들어주세요 */}
+            {/* Navigator가 없는 경우 */}
             <Route path='/post/:id' element={<Detail />} />
             <Route path='/search' element={<Search />} />
             <Route path='/profile' element={<Profile />} />
