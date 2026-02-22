@@ -12,6 +12,7 @@ export default function CardListSkeleton({ variant = "list" }) {
       <S.CardContainer $variant={variant}>
         <S.BadgeWrapper>
           <S.SkeletonBadge />
+          <S.SkeletonBadge />
         </S.BadgeWrapper>
         <S.CardImage $hasRealImage={false} style={{ background: "none" }}>
           <S.SkeletonImage />
@@ -28,6 +29,7 @@ export default function CardListSkeleton({ variant = "list" }) {
     <S.CardContainer $variant={variant}>
       <S.ContentWrapper>
         <S.BadgeWrapper>
+          <S.SkeletonBadge />
           <S.SkeletonBadge />
         </S.BadgeWrapper>
         <S.SkeletonTitle />
