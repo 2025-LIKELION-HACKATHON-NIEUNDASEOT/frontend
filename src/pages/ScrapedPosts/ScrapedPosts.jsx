@@ -20,6 +20,7 @@ import CategoryBar from "../../components/CategoryBar/CategoryBar";
 import CardList from "../../components/CardList/CardList";
 import Empty from "../../components/Empty/Empty";
 import PageTitle from "../../components/PageTitle/PageTitle";
+import CardListSkeleton from "../../components/CardList/CardListSkeleton";
 
 import DropIcon from "../../assets/Back Icon.svg";
 
@@ -215,7 +216,11 @@ export default function ScrapedPosts() {
         </S.OrderContainer>
 
         <S.PostsWrapper>
-          {items.length > 0 ? (
+          {isPostsLoading ? (
+            Array(5)
+              .fill(0)
+              .map((_, i) => <CardListSkeleton key={i} variant='list' />)
+          ) : items.length > 0 ? (
             items.map((p) => (
               <CardList
                 badges={makeScrapBadges(p)}

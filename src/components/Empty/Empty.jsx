@@ -1,4 +1,5 @@
-import * as S from "../../pages/Notification/NotificationEmptyStyle";
+import * as N from "../../pages/Notification/NotificationEmptyStyle";
+import * as S from "./EmptyStyle";
 
 /**
  * 표시할 내용이 없다고 알리는 컴포넌트
@@ -9,9 +10,9 @@ import * as S from "../../pages/Notification/NotificationEmptyStyle";
 export default function Empty({ text, subText }) {
   return (
     <S.EmptyContainer>
-      <S.EmptyIcon />
-      <S.EmptyText>{text}</S.EmptyText>
-      <S.EmptySubText>{subText}</S.EmptySubText>
+      <N.EmptyIcon />
+      <N.EmptyText>{text}</N.EmptyText>
+      <N.EmptySubText>{subText}</N.EmptySubText>
     </S.EmptyContainer>
   );
 }

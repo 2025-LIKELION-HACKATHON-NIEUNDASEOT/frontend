@@ -21,6 +21,7 @@ import Chatbot from "../../components/Chatbot/Chatbot";
 import ShareToast from "../../components/ShareToast/ShareToast";
 import RecommendBadges from "./RecommendBadges";
 import PageTitle from "../../components/PageTitle/PageTitle";
+import CardListSkeleton from "../../components/CardList/CardListSkeleton";
 
 import scrapTrue from "../../assets/Detail/bookmark_true.svg";
 import scrapFalse from "../../assets/Detail/bookmark_false.svg";
@@ -238,18 +239,22 @@ export default function Detail() {
           <S.RecommendTitle>관련 공문 추천</S.RecommendTitle>
           {post.similar_documents?.map((doc) => (
             <RecommendBadges key={doc.id} doc={doc}>
-              {(badges, loading) => (
-                <CardList
-                  badges={badges}
-                  title={doc.doc_title}
-                  date={doc.pub_date.slice(0, 10)}
-                  key={doc.id}
-                  onClick={() => navigate(`/post/${doc.id}`)}
-                  type={doc.doc_type}
-                  image={doc.image_url}
-                  variant='recommend'
-                />
-              )}
+              {(badges, loading) =>
+                loading ? (
+                  <CardListSkeleton variant='recommend' />
+                ) : (
+                  <CardList
+                    badges={badges}
+                    title={doc.doc_title}
+                    date={doc.pub_date.slice(0, 10)}
+                    key={doc.id}
+                    onClick={() => navigate(`/post/${doc.id}`)}
+                    type={doc.doc_type}
+                    image={doc.image_url}
+                    variant='recommend'
+                  />
+                )
+              }
             </RecommendBadges>
           ))}
         </S.RecommendBox>

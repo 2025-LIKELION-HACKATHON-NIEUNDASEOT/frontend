@@ -22,6 +22,7 @@ import SmallFilter from "../../components/SmallFilter/SmallFilter";
 import PushBtn from "../../components/PushBtn/PushBtn";
 import ShareToast from "../../components/ShareToast/ShareToast.jsx";
 import PageTitle from "../../components/PageTitle/PageTitle.jsx";
+import CardListSkeleton from "../../components/CardList/CardListSkeleton.jsx";
 
 const API_URL = process.env.REACT_APP_API_URL;
 const READ_NOTIFICATIONS_KEY = "readNotifications";
@@ -123,29 +124,32 @@ export default function Notification() {
         </F.SmallFilterWrapper>
 
         <PushBtn setToastShow={setToastShow} />
-        {!isLoading &&
-          (notifications.length > 0 ? (
-            notifications.map((item) => {
-              // 서버에서 is_read가 false이고, 로컬에서도 읽지 않았을 때만 isUnread를 true로 설정
-              const isUnread = !item.is_read && !readIds.has(item.id);
+        {isLoading ? (
+          Array(5)
+            .fill(0)
+            .map((_, i) => <CardListSkeleton key={i} variant='notification' />)
+        ) : notifications.length > 0 ? (
+          notifications.map((item) => {
+            // 서버에서 is_read가 false이고, 로컬에서도 읽지 않았을 때만 isUnread를 true로 설정
+            const isUnread = !item.is_read && !readIds.has(item.id);
 
-              return (
-                <CardList
-                  key={item.id}
-                  variant='notification'
-                  badges={makeNotiBadges(item)}
-                  title={item.title || item.doc_title}
-                  date={item.notification_time.slice(0, 10)}
-                  isUnread={isUnread}
-                  onClick={() => handleNotificationClick(item)} // 수정된 핸들러 연결
-                  image={item.document_info.image_url}
-                  type={item.document_info.doc_type}
-                />
-              );
-            })
-          ) : (
-            <NotificationEmpty />
-          ))}
+            return (
+              <CardList
+                key={item.id}
+                variant='notification'
+                badges={makeNotiBadges(item)}
+                title={item.title || item.doc_title}
+                date={item.notification_time.slice(0, 10)}
+                isUnread={isUnread}
+                onClick={() => handleNotificationClick(item)} // 수정된 핸들러 연결
+                image={item.document_info.image_url}
+                type={item.document_info.doc_type}
+              />
+            );
+          })
+        ) : (
+          <NotificationEmpty />
+        )}
       </S.NotificationContainer>
 
       <B.ButtonWrapper>

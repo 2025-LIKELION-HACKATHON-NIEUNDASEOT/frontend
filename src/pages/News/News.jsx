@@ -19,6 +19,8 @@ import Filter from "../../components/Filter/Filter";
 import CardList from "../../components/CardList/CardList.jsx";
 import Badge from "../../components/Badge/Badge";
 import PageTitle from "../../components/PageTitle/PageTitle.jsx";
+import CardListSkeleton from "../../components/CardList/CardListSkeleton.jsx";
+import Empty from "../../components/Empty/Empty.jsx";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -159,17 +161,25 @@ export default function News() {
             <Filter onChange={handleFilter} />
           </S.FilterWrapper>
 
-          {posts.map((item) => (
-            <CardList
-              key={item.id}
-              badges={makeBadges(item)}
-              title={item.doc_title}
-              date={item.pub_date.slice(0, 10)}
-              onClick={() => navigate(`/post/${item.id}`)}
-              image={item.image_url}
-              type={item.doc_type}
-            />
-          ))}
+          {isPostsLoading ? (
+            Array(5)
+              .fill(0)
+              .map((_, i) => <CardListSkeleton key={i} variant='list' />)
+          ) : posts?.length !== 0 ? (
+            posts.map((item) => (
+              <CardList
+                key={item.id}
+                badges={makeBadges(item)}
+                title={item.doc_title}
+                date={item.pub_date.slice(0, 10)}
+                onClick={() => navigate(`/post/${item.id}`)}
+                image={item.image_url}
+                type={item.doc_type}
+              />
+            ))
+          ) : (
+            <Empty text='조건에 맞는 공문이 없어요' subtext='' />
+          )}
           <div ref={loadMoreRef} />
         </S.ListSection>
       </S.NewsContainer>

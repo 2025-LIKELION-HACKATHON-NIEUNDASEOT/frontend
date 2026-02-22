@@ -15,6 +15,7 @@ import CardList from "../../components/CardList/CardList";
 import ChatbotBox from "../../components/ChatbotBox/ChatbotBox";
 import Badge from "../../components/Badge/Badge";
 import PageTitle from "../../components/PageTitle/PageTitle";
+import CardListSkeleton from "../../components/CardList/CardListSkeleton";
 
 import character from "../../assets/Character.png";
 
@@ -173,9 +174,13 @@ export default function MyPage() {
                 />
               )}
             </H.SectionHeader>
-            {scrapedPosts?.length !== 0 ? (
+            {isPostsLoading ? (
+              Array(3)
+                .fill(0)
+                .map((_, i) => <CardListSkeleton key={i} variant='list' />)
+            ) : scrapedPosts?.length !== 0 ? (
               <H.CardListWrapper>
-                {!isPostsLoading && scrapedPosts && (
+                {scrapedPosts && (
                   <>
                     {scrapedPosts?.slice(0, 3).map((p) => (
                       <CardList
