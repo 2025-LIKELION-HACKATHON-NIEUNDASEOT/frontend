@@ -22,6 +22,7 @@ import ShareToast from "../../components/ShareToast/ShareToast";
 import RecommendBadges from "./RecommendBadges";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import CardListSkeleton from "../../components/CardList/CardListSkeleton";
+import DetailSkeleton from "./DetailSkeleton";
 
 import scrapTrue from "../../assets/Detail/bookmark_true.svg";
 import scrapFalse from "../../assets/Detail/bookmark_false.svg";
@@ -167,71 +168,77 @@ export default function Detail() {
 
       {/* 페이지 UI */}
       <S.DetailContainer>
-        {!isPostLoading && post && (
-          <>
-            {/* 공문 정보 박스 */}
-            <S.InfoBox>
-              <S.BadgeWrapper>
-                <Badge key={post.region_id}>{REGION_MAP[post.region_id]}</Badge>
-                {(post.categories ?? []).map((c) => (
-                  <Badge color='teal' key={c.id}>
-                    {c.category_name}
+        {isPostLoading ? (
+          <DetailSkeleton />
+        ) : (
+          post && (
+            <>
+              {/* 공문 정보 박스 */}
+              <S.InfoBox>
+                <S.BadgeWrapper>
+                  <Badge key={post.region_id}>
+                    {REGION_MAP[post.region_id]}
                   </Badge>
-                ))}
-              </S.BadgeWrapper>
-              <S.Title>{post.doc_title}</S.Title>
-              <S.MetaInfo>
-                <S.MetaInfoLabel>
-                  <li>작성일</li>
-                  <li>관련부서</li>
-                  {/* <li>문의</li> */}
-                </S.MetaInfoLabel>
-                <S.MetaInfoData>
-                  <li>{post.pub_date.slice(0, 10)}</li>
-                  {/* 관련부서 추가 or 아예 삭제 필요 */}
-                  <li>{post.related_departments}</li>
-                  {/* 문의 전화번호 추가 or 아예 삭제 필요 */}
-                  {/* <li>전화번호</li> */}
-                </S.MetaInfoData>
-              </S.MetaInfo>
-            </S.InfoBox>
+                  {(post.categories ?? []).map((c) => (
+                    <Badge color='teal' key={c.id}>
+                      {c.category_name}
+                    </Badge>
+                  ))}
+                </S.BadgeWrapper>
+                <S.Title>{post.doc_title}</S.Title>
+                <S.MetaInfo>
+                  <S.MetaInfoLabel>
+                    <li>작성일</li>
+                    <li>관련부서</li>
+                    {/* <li>문의</li> */}
+                  </S.MetaInfoLabel>
+                  <S.MetaInfoData>
+                    <li>{post.pub_date.slice(0, 10)}</li>
+                    {/* 관련부서 추가 or 아예 삭제 필요 */}
+                    <li>{post.related_departments}</li>
+                    {/* 문의 전화번호 추가 or 아예 삭제 필요 */}
+                    {/* <li>전화번호</li> */}
+                  </S.MetaInfoData>
+                </S.MetaInfo>
+              </S.InfoBox>
 
-            {/* AI 요약 */}
-            <S.AIBox>
-              <S.AICharacter />
-              <S.AIHeader>
-                <S.AITitle>AI 요약</S.AITitle>
-              </S.AIHeader>
-              {/* 추가 예정 */}
-              <S.Content>{post.summary}</S.Content>
-            </S.AIBox>
+              {/* AI 요약 */}
+              <S.AIBox>
+                <S.AICharacter />
+                <S.AIHeader>
+                  <S.AITitle>AI 요약</S.AITitle>
+                </S.AIHeader>
+                {/* 추가 예정 */}
+                <S.Content>{post.summary}</S.Content>
+              </S.AIBox>
 
-            {/* 본문 */}
-            <S.ContentBox>
-              <S.Content>{formatText(post.doc_content)}</S.Content>
-              {/* 추가 예정 */}
-              <img src={post.image_url ?? null} />
-            </S.ContentBox>
+              {/* 본문 */}
+              <S.ContentBox>
+                <S.Content>{formatText(post.doc_content)}</S.Content>
+                {/* 추가 예정 */}
+                <img src={post.image_url ?? null} />
+              </S.ContentBox>
 
-            {/* 본문 하단 버튼 */}
-            <S.ButtonBox>
-              {/* 추가 필요 */}
-              <S.LinkBtn href={post.link_url}>원문 바로가기</S.LinkBtn>
-              <S.SecondBtnBox>
-                <S.SecondBtn
-                  onClick={toggleScrap}
-                  disabled={!scrapReady || isScraping}
-                >
-                  <img src={isScraped ? scrapTrue : scrapFalse} />
-                  스크랩
-                </S.SecondBtn>
-                <S.SecondBtn onClick={onShareClick}>
-                  <img src={share} />
-                  공유하기
-                </S.SecondBtn>
-              </S.SecondBtnBox>
-            </S.ButtonBox>
-          </>
+              {/* 본문 하단 버튼 */}
+              <S.ButtonBox>
+                {/* 추가 필요 */}
+                <S.LinkBtn href={post.link_url}>원문 바로가기</S.LinkBtn>
+                <S.SecondBtnBox>
+                  <S.SecondBtn
+                    onClick={toggleScrap}
+                    disabled={!scrapReady || isScraping}
+                  >
+                    <img src={isScraped ? scrapTrue : scrapFalse} />
+                    스크랩
+                  </S.SecondBtn>
+                  <S.SecondBtn onClick={onShareClick}>
+                    <img src={share} />
+                    공유하기
+                  </S.SecondBtn>
+                </S.SecondBtnBox>
+              </S.ButtonBox>
+            </>
+          )
         )}
 
         {/* 관련 공문 추천 */}

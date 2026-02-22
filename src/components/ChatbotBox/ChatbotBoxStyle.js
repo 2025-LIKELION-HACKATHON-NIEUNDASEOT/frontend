@@ -78,6 +78,7 @@ export const Divide = styled.div`
   pointer-events: none;
 `;
 
+/* ChatboxBoxSkeleton.jsx */
 const skeletonGradient = keyframes`
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
