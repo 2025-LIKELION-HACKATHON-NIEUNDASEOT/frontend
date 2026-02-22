@@ -178,7 +178,7 @@ export default function News() {
               />
             ))
           ) : (
-            <Empty text='조건에 맞는 공문이 없어요' subtext='' />
+            <Empty text='조건에 맞는 공문이 없어요' />
           )}
           <div ref={loadMoreRef} />
         </S.ListSection>

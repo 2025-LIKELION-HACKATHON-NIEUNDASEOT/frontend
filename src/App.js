@@ -77,16 +77,16 @@ function App() {
     <>
       <GlobalStyle />
       <Main>
-        <AnimatePresence mode='popLayout' custom={direction}>
+        <AnimatePresence mode='sync' custom={direction}>
           <Routes location={location} key={location.pathname}>
-            <Route element={<WithNav custom={direction} />}>
+            <Route element={<WithNav direction={direction} />}>
               {/* Navigator가 있는 경우 */}
               <Route index element={<Home />} />
               <Route path='/notification' element={<Notification />} />
               <Route path='/news' element={<News />} />
               <Route path='/mypage' element={<MyPage />} />
             </Route>
-            <Route element={<WithoutNav custom={direction} />}>
+            <Route element={<WithoutNav direction={direction} />}>
               {/* Navigator가 없는 경우 */}
               <Route path='/post/:id' element={<Detail />} />
               <Route path='/search' element={<Search />} />
