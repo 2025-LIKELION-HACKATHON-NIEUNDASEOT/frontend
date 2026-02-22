@@ -254,7 +254,6 @@ export default function Detail() {
                     badges={badges}
                     title={doc.doc_title}
                     date={doc.pub_date.slice(0, 10)}
-                    key={doc.id}
                     onClick={() => navigate(`/post/${doc.id}`)}
                     type={doc.doc_type}
                     image={doc.image_url}
