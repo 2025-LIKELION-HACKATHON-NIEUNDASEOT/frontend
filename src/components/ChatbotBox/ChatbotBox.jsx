@@ -68,36 +68,44 @@ export default function ChatbotBox({
           onClick={onToggle}
         ></F.chevronBtn>
       </S.ContentContainer>
-      {/* 챗봇 상세 내용 (펼쳤을 때) : Chatbot에서 가져옴 */}
-      {expanded && !loading && detail && (
-        <>
-          <S.DetailWrapper>
-            <C.Chats>
-              <C.UserChatWrapper>
-                <C.UserChat
-                  style={{ backgroundColor: "var(--color-base-white)" }}
-                >
-                  {detail.user_message_content}
-                </C.UserChat>
-              </C.UserChatWrapper>
-              <C.AIChatWrapper>
-                <C.AIProfile />
-                <C.AIChat>
-                  <C.AIChatContent>{detail.ai_message_content}</C.AIChatContent>
-                </C.AIChat>
-              </C.AIChatWrapper>
-            </C.Chats>
-          </S.DetailWrapper>
-          {/* 펼쳤을 때만 보이는 삭제, 접기 버튼 */}
-          <S.ButtonWrapper>
-            <S.Button onClick={onDelete} disabled={isDeleting}>
-              스크랩 삭제
-            </S.Button>
-            <S.Divide></S.Divide>
-            <S.Button onClick={onToggle}>접기</S.Button>
-            <div ref={ref} style={{ height: "1px" }}></div>
-          </S.ButtonWrapper>
-        </>
+      {expanded && loading ? (
+        <S.DetailWrapper style={{ padding: "20px 12px" }}>
+          <S.SkeletonChat style={{ width: "70%", alignSelf: "flex-end" }} />{" "}
+          <S.SkeletonChat style={{ width: "85%" }} />
+        </S.DetailWrapper>
+      ) : (
+        detail && (
+          <>
+            <S.DetailWrapper>
+              <C.Chats>
+                <C.UserChatWrapper>
+                  <C.UserChat
+                    style={{ backgroundColor: "var(--color-base-white)" }}
+                  >
+                    {detail.user_message_content}
+                  </C.UserChat>
+                </C.UserChatWrapper>
+                <C.AIChatWrapper>
+                  <C.AIProfile />
+                  <C.AIChat>
+                    <C.AIChatContent>
+                      {detail.ai_message_content}
+                    </C.AIChatContent>
+                  </C.AIChat>
+                </C.AIChatWrapper>
+              </C.Chats>
+            </S.DetailWrapper>
+            {/* 펼쳤을 때만 보이는 삭제, 접기 버튼 */}
+            <S.ButtonWrapper>
+              <S.Button onClick={onDelete} disabled={isDeleting}>
+                스크랩 삭제
+              </S.Button>
+              <S.Divide></S.Divide>
+              <S.Button onClick={onToggle}>접기</S.Button>
+              <div ref={ref} style={{ height: "1px" }}></div>
+            </S.ButtonWrapper>
+          </>
+        )
       )}
     </S.ChatbotWrapper>
   );
