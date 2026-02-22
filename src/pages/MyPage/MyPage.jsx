@@ -16,6 +16,7 @@ import ChatbotBox from "../../components/ChatbotBox/ChatbotBox";
 import Badge from "../../components/Badge/Badge";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import CardListSkeleton from "../../components/CardList/CardListSkeleton";
+import ChatbotBoxSkeleton from "../../components/ChatbotBox/ChatbotBoxSkeleton";
 
 import character from "../../assets/Character.png";
 
@@ -215,9 +216,13 @@ export default function MyPage() {
                 />
               )}
             </H.SectionHeader>
-            {scrapedChatbots.length !== 0 ? (
+            {isChatbotsLoading ? (
+              Array(3)
+                .fill(0)
+                .map((_, i) => <ChatbotBoxSkeleton key={i} />)
+            ) : scrapedChatbots.length !== 0 ? (
               <H.CardListWrapper>
-                {!isChatbotsLoading && scrapedChatbots && (
+                {scrapedChatbots && (
                   <>
                     {scrapedChatbots?.slice(0, 3).map((c) => (
                       <ChatbotBox

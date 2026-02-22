@@ -17,6 +17,7 @@ import Button from "../../components/Button/Button";
 import ChatbotBox from "../../components/ChatbotBox/ChatbotBox";
 import Empty from "../../components/Empty/Empty";
 import PageTitle from "../../components/PageTitle/PageTitle";
+import ChatbotBoxSkeleton from "../../components/ChatbotBox/ChatbotBoxSkeleton";
 
 import DropIcon from "../../assets/Back Icon.svg";
 
@@ -268,7 +269,11 @@ export default function ScrapedChatbots() {
           </D.ResultHeader>
         </P.OrderContainer>
         <S.ContentContainer>
-          {items.length > 0 ? (
+          {isChatbotsLoading ? (
+            Array(5)
+              .fill(0)
+              .map((_, i) => <ChatbotBoxSkeleton key={i} />)
+          ) : items.length > 0 ? (
             items.map((c) => (
               <ChatbotBox
                 key={c.id}
