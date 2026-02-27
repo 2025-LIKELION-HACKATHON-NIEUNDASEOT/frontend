@@ -37,6 +37,9 @@ const getPageIndex = (path) => {
   return PAGE_ORDER[path] || 0;
 };
 
+// 이전 인덱스를 기억하기 위한 변수
+let lastIndex = 0;
+
 // Navigator를 띄우는 레이아웃
 function WithNav({ direction }) {
   return (
@@ -60,19 +63,10 @@ function WithoutNav({ direction }) {
 
 function App() {
   const location = useLocation(); // 현재 경로 감지
-  const [direction, setDirection] = useState(1);
-  const [prevPath, setPrevPath] = useState(location.pathname);
 
-  // 경로가 바뀔 때마다 방향 계산 -> 애니메이션에 반영
-  useEffect(() => {
-    const prevIndex = getPageIndex(prevPath);
-    const currIndex = getPageIndex(location.pathname);
-
-    if (prevPath !== location.pathname) {
-      setDirection(currIndex < prevIndex ? -1 : 1);
-      setPrevPath(location.pathname);
-    }
-  }, [location.pathname, prevPath]);
+  const currentIndex = getPageIndex(location.pathname);
+  const direction = currentIndex < lastIndex ? -1 : 1;
+  lastIndex = currentIndex; // 다음 렌더링을 위해 현재 인덱스 저장
   return (
     <>
       <GlobalStyle />
