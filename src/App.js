@@ -17,6 +17,7 @@ import ScrapedPosts from "./pages/ScrapedPosts/ScrapedPosts";
 import Profile from "./pages/Profile/Profile";
 import Notification from "./pages/Notification/Notification.jsx";
 import News from "./pages/News/News";
+import NotFound from "./pages/NotFound/NotFound.jsx";
 
 // 페이지 전환 애니메이션을 위한 경로별 우선순위 정의
 const PAGE_ORDER = {
@@ -87,6 +88,7 @@ function App() {
               <Route path='/profile' element={<Profile />} />
               <Route path='/scrap/posts' element={<ScrapedPosts />} />
               <Route path='/scrap/chatbots' element={<ScrapedChatbots />} />
+              <Route path='*' element={<NotFound />} />
             </Route>
           </Routes>
         </AnimatePresence>
