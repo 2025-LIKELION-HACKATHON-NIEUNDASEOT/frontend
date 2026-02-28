@@ -7,4 +7,14 @@ export const EmptyContainer = styled.div`
   align-items: center;
   width: 100%;
   padding: 100px 0;
+  gap: ${({ $isInNotFound }) => ($isInNotFound ? "8px" : "0px")};
+`;
+
+export const Btn = styled.button`
+  width: 70%;
+  height: 40px;
+  border-radius: 8px;
+  background-color: var(--color-blue-400-main);
+  color: #fff;
+  font-weight: 600;
 `;
