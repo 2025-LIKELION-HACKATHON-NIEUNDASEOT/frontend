@@ -17,4 +17,10 @@ export const Btn = styled.button`
   background-color: var(--color-blue-400-main);
   color: #fff;
   font-weight: 600;
+  transition: background-color 0.3s ease;
+
+  &:hover,
+  &:active {
+    background-color: var(--color-blue-500);
+  }
 `;
